@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mouse follower</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+    </style>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    window.onmousemove = function(event){
+        var x = event.clientX;
+        var lowX = x % 256;
+        var highX = x >>> 8;
+
+        var y = event.clientY;
+        var lowY = y % 256;
+        var highY = y >>> 8;
+
+        var arr32 = [lowX, highX, lowY, highY];
+        var arr8 =  Uint8Array.from(arr32);
+        console.log(`${event.clientX}:${event.clientY}`);
+        console.log(arr8);
+        socket.send(arr8);
+    };
+  </script>
+  <body>
+  </body>
+</html>
