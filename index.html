@@ -7,9 +7,10 @@
       body { font: 13px Helvetica, Arial; }
     </style>
   </head>
-  <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io();
+    var socket = new WebSocket("ws://localhost:3000");
+    // TODO: rate limit. E.g. only sample at 20x per second.
+    // TODO: consider putting in a webworker?
     window.onmousemove = function(event){
         var x = event.clientX;
         var lowX = x % 256;
