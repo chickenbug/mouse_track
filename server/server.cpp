@@ -13,6 +13,7 @@ static uint64_t uuid = 1;
 
 void messageRecv(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
     if (opCode == uWS::OpCode::BINARY) {
+        /* TODO: read a chunk of points */
         uint64_t id = (uint64_t)ws->getUserData();
         std::cout << "Got binary message of length " << length << " from user " << id << std::endl;
         // Insert into mongodb
