@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://localhost:3000");
+        var pings = 0;
+        var startTime = 0;
+        const totalBytes = 1000000;
+        var nMessages;
+        var chunkSize;
+        var doneCallback = null;
+
+
+        ws.onmessage = function(msg) {
+            pings++;
+            if (pings >= nMessages) {
+                var endTime = Date.now();
+                console.log("Chunk size = " + chunkSize + " total messages = " + nMessages + " took " + (endTime - startTime));
+                if (doneCallback) doneCallback();
+            }
+        }
+
+        function runTest(cs) {
+            console.log("Running test for chunkSize = " + cs);
+            chunkSize = cs;
+            pings = 0;
+            nMessages = Math.ceil(parseFloat(totalBytes) / chunkSize);
+
+            const lastChunkSize = totalBytes % 100;
+            startTime = Date.now();
+
+            var chunkData = new Uint8Array(chunkSize);
+            var lastChunkData = new Uint8Array(lastChunkSize);
+            chunkData.fill(1);
+            lastChunkData.fill(1);
+
+            //console.log(nMessages, chunkSize);
+
+            for (var i = 0; i < nMessages - 1; i++) {
+                ws.send(chunkData);
+            }
+            ws.send(lastChunkData);
+        }
+
+        function runAllTests() {
+            var chunkSizes = [1024, 2048, 4096, 8000, 16000, 32000, 64000];
+            var index = 0;
+            doneCallback = function() {
+                index++;
+                if (index < chunkSizes.length) runTest(chunkSizes[index]);
+            };
+            runTest(chunkSizes[0]);
+        }
+
+        function sendSomething() {
+            var testData = Uint8Array.from([0x12, 0x34]);
+            ws.send(testData);
+        }
+    </script>
+</body>
+</html>
