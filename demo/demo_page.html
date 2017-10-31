@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
     <style type="text/css">
+        .cursor {
+            width: 10px;
+            height: 10px;
+            background: #F00;
+            position: absolute;
+        }
     </style>
 </head>
 <body>
@@ -29,8 +35,9 @@
             }
 
             let cursor = cursors[id];
-            cursor.x = doc.x;
-            cursor.y = doc.y;
+            // TODO: interpolate all members of d based on sampling rate.
+            cursor.x = doc.d[0].x;
+            cursor.y = doc.d[0].y;
             cursor.el.style.left = cursor.x + "px";
             cursor.el.style.top = cursor.y + "px";
         });
