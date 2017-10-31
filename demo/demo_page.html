@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+
+    Cursor demo. Everyone's cursor on the page shows here.
+    <script type="text/javascript">
+        let cursors = {};
+        let ws = new WebSocket ("ws://localhost:8888");
+        ws.addEventListener("message", function(e) {
+            let doc = JSON.parse(e.data).fullDocument;
+            if (!doc) {
+                console.log("Could not read document");
+                return;
+            }
+            let id = doc.uuid;
+            if (!(id in cursors)) {
+                let cursor = {
+                    el : document.createElement("div"),
+                    x: 0,
+                    y: 0
+                };
+                cursor.el.className = "cursor";
+                document.body.appendChild (cursor.el);
+                cursors[id] = cursor;
+            }
+
+            let cursor = cursors[id];
+            cursor.x = doc.x;
+            cursor.y = doc.y;
+            cursor.el.style.left = cursor.x + "px";
+            cursor.el.style.top = cursor.y + "px";
+        });
+    </script>
+</body>
+</html>

@@ -35,7 +35,9 @@ void record_data (db_handle_t* handle,
     }
     bson_append_array_end (&bson, &array);
 
-    printf ("Constructed document %s\n", bson_as_json(&bson, NULL)); // TODO leaks.
+    char* str = bson_as_json(&bson, NULL);
+    printf ("Constructed document %s\n", str);
+    bson_free (str);
 
     mongoc_collection_insert(handle->coll, MONGOC_INSERT_NONE, &bson, NULL, NULL);
 
