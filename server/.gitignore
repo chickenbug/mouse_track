@@ -1,2 +1,4 @@
 *.o
 server
+benchmark
+node_modules

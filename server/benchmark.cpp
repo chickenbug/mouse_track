@@ -18,13 +18,13 @@ typedef uWS::WebSocket<uWS::CLIENT> ClientSocket;
 std::vector<ClientSocket*> sockets;
 ClientSocket* master = NULL;
 
-const int numConnections = 2;
+const int numConnections = 1;
 const int messageSize = 1000; // in bytes (should be divisible by 4).
 const int messagesToBroadcast = 30;
 int messagesBroadcasted = 0;
 char* premadeMessage;
 
-const int numTrials = 20;
+const int numTrials = 3;
 int trial = 0;
 
 int numAcks = 0;
