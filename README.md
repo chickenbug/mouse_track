@@ -11,7 +11,25 @@ Optimizations:
 - run through valgrind to check for leaks
 
 Today:
-- make a demo with changestreams + Node server
-- [HK] send data at a fixed sampling rate, and interpolate on the client side
+- [done] make a demo with changestreams + Node server
+- send data at a fixed sampling rate
+- interpolate on the client side
 - [ME] get metric baselines
+    - benchmarking:
+        - user vs kernel time with `time`?
+        - memory usage per socket?
+
 - optimize to improve those baselines
+
+
+# Notes
+- decided not to measure latency because we won't be receiving responses on socket
+
+
+With w:1 write concern
+Echo performance: 0.136442 mb/s
+Echo performance: 0.136273 mb/s
+
+With w:0 write concern
+Echo performance: 0.210132 mb/s
+Echo performance: 0.218225 mb/s

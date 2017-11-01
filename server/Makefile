@@ -1,7 +1,12 @@
 CC=clang++
 
-all: server.o db.o
+all: server benchmark
+
+server: server.o db.o
 	clang++ -o server server.o db.o -lpthread -luWS -lssl -lcrypto -lz -luv -DUSE_LIBUV -lmongoc-1.0 -lbson-1.0
+
+benchmark: benchmark.cpp
+	clang++ -std=c++11 -o benchmark benchmark.cpp -lpthread -luWS -lssl -lcrypto -lz -luv -DUSE_LIBUV
 
 server.o: server.cpp
 	clang++ -c -o server.o -std=c++11 server.cpp
